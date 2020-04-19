@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 actix = "0.10.0-alpha.1"
+rand = "0.6.5"
