@@ -2,7 +2,7 @@ use actix::prelude::*;
 use std::time::SystemTime;
 
 use super::model::{Node, State};
-use super::model::Operation;
+use super::log::Operation;
 use super::heartbeat::FollowerHeartbeatElapseLoop;
 use crate::heartbeat::LeaderHeartbeatSendLoop;
 

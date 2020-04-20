@@ -2,16 +2,27 @@ mod bootstrap;
 mod model;
 mod heartbeat;
 mod election;
+mod log;
+mod ops;
 
 use actix::prelude::*;
-use model::Node;
+use model::{Node, Client};
 use bootstrap::Bootstrap;
+use std::collections::HashMap;
 
 impl Actor for Node {
     type Context = Context<Self>;
 
     fn started(&mut self, _: &mut Self::Context) {
         println!("[{} {}]: Node has been started", self.id, self.state);
+    }
+}
+
+impl Actor for Client {
+    type Context = Context<Self>;
+
+    fn started(&mut self, _: &mut Self::Context) {
+        println!("Client has been started");
     }
 }
 
@@ -29,6 +40,8 @@ fn main() {
     for (_, node) in &nodes {
         node.do_send(Bootstrap {peers: nodes.clone()});
     }
+
+    Client::create(|_ctx| { Client::new(nodes.iter().map(|n| n.1.clone() ).collect()) } );
 
     let _ = system.run();
 }

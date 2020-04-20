@@ -86,21 +86,3 @@ impl Handler<LeaderHeartbeatSendLoop> for Node {
 
     }
 }
-
-impl Node {
-    pub fn reset_election(&mut self) {
-        self.state = State::CANDIDATE;
-        self.voted_for = 0;
-        for pear in &mut self.peers {
-            pear.is_vote_granted = false;
-            pear.is_vote_revoked = false;
-        }
-    }
-
-    pub fn reset_heartbeat(&mut self) {
-        let now = SystemTime::now()
-            .duration_since(SystemTime::UNIX_EPOCH).unwrap()
-            .as_millis();
-        self.heartbeat = now
-    }
-}
