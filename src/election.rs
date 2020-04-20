@@ -58,6 +58,7 @@ impl Handler<NewElectionRound> for Node {
                 )
             }
         } else {
+            println!("[{} {}]: Cancel election! Already voted for another candidate {}!", self.id, self.state, self.voted_for);
             self.reset_heartbeat();
             ctx.address().do_send(FollowerHeartbeatElapseLoop {})
         }
@@ -80,6 +81,7 @@ impl Handler<VoteFor> for Node {
             let term_check = if msg.term == self.current_term {
                 self.voted_for == 0 || self.voted_for == msg.candidate_id
             } else {
+                println!("[{} {}]: -> {} Term: {}!", self.id, self.state, State::FOLLOWER, msg.term);
                 self.state = State::FOLLOWER;
                 self.current_term = msg.term;
                 self.reset_heartbeat();
@@ -109,6 +111,7 @@ impl Handler<Voted> for Node {
     fn handle(&mut self, msg: Voted, ctx: &mut Context<Self>) -> Self::Result {
         println!("[{} {}]: Voted {}, term {}/{}, vote_granted: {}!", self.id, self.state, msg.id, msg.term, self.current_term, msg.vote_granted);
         if msg.term > self.current_term {
+            println!("[{} {}]: -> {} Term: {}!", self.id, self.state, State::FOLLOWER, msg.term);
             self.state = State::FOLLOWER;
             self.current_term = msg.term;
         } else {
