@@ -87,10 +87,11 @@ impl Node {
 
 pub struct Client {
     pub cluster: Vec<Addr<Node>>,
+    pub leader: Option<Addr<Node>>
 }
 
 impl Client {
     pub fn new(nodes: Vec<Addr<Node>>) -> Self {
-        Client { cluster: nodes }
+        Client { cluster: nodes, leader: Option::None }
     }
 }

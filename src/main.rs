@@ -1,4 +1,6 @@
 mod bootstrap;
+mod node;
+mod client;
 mod model;
 mod heartbeat;
 mod election;
@@ -8,23 +10,7 @@ mod ops;
 use actix::prelude::*;
 use model::{Node, Client};
 use bootstrap::Bootstrap;
-use std::collections::HashMap;
-
-impl Actor for Node {
-    type Context = Context<Self>;
-
-    fn started(&mut self, _: &mut Self::Context) {
-        println!("[{} {}]: Node has been started", self.id, self.state);
-    }
-}
-
-impl Actor for Client {
-    type Context = Context<Self>;
-
-    fn started(&mut self, _: &mut Self::Context) {
-        println!("Client has been started");
-    }
-}
+use std::time::Duration;
 
 fn main() {
     let system = System::new("raft-cluster");

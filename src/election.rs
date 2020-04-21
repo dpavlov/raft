@@ -1,5 +1,4 @@
 use actix::prelude::*;
-use std::time::SystemTime;
 
 use super::model::{Node, State};
 use super::log::Operation;
